@@ -5,20 +5,20 @@ class CodeLinter
     end
 
     def validate
-        return validOpening && validClosing && balancedSymbols
+        return valid_opening && valid_closing && balanced_symbols && no_syntax_errors
     end
 
     private
 
-    def validOpening
+    def valid_opening
         @code[0] == '<' || @code[0] == '['
     end
 
-    def validClosing
+    def valid_closing
         @code[-1] == '>' || @code[-1] == ']'
     end
 
-    def balancedSymbols
+    def balanced_symbols
         angle_openings = 0
         angle_closings = 0
         square_openings = 0
@@ -38,5 +38,17 @@ class CodeLinter
         end
 
         return angle_openings == angle_closings && square_openings == square_closings
+    end
+
+    def no_syntax_errors
+        syntax_errors = [/<\]\[>/, /<\[>/, /<\]>/, /\[><\]/]
+
+        syntax_errors.each do |error|
+            if @code.match?(error)
+                return false
+            end
+        end
+
+        true
     end
 end
