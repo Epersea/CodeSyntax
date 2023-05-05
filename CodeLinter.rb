@@ -5,37 +5,38 @@ class CodeLinter
     end
 
     def validate
-        return validOpening && validClosing && sameNumberOfSymbols
+        return validOpening && validClosing && balancedSymbols
     end
 
     private
 
     def validOpening
-        @code[0] == '<'
+        @code[0] == '<' || @code[0] == '['
     end
 
     def validClosing
-        @code[-1] == '>'
+        @code[-1] == '>' || @code[-1] == ']'
     end
 
-    def sameNumberOfSymbols
-        openings = 0
-        
-        closings = 0
+    def balancedSymbols
+        angle_openings = 0
+        angle_closings = 0
+        square_openings = 0
+        square_closings = 0
         parseableCode = @code.split('')
 
         parseableCode.each do |char|
             if char == '<'
-                openings += 1
-            end
-            if char == '>'
-                closings += 1
+                angle_openings += 1
+            elsif char == '>'
+                angle_closings += 1
+            elsif char == '['
+                square_openings += 1
+            elsif char == ']'
+                square_closings += 1
             end
         end
-        p parseableCode
-        p "Number of openings: #{openings}"
-        p "Number of closings: #{closings}"
-        
-        return openings == closings
+
+        return angle_openings == angle_closings && square_openings == square_closings
     end
 end
