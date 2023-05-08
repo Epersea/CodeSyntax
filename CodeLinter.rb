@@ -19,25 +19,23 @@ class CodeLinter
     end
 
     def balanced_symbols
-        angle_openings = 0
-        angle_closings = 0
-        square_openings = 0
-        square_closings = 0
-        parseableCode = @code.split('')
+        same_openings_and_closings('<', '>') && same_openings_and_closings('[', ']')
+    end
 
-        parseableCode.each do |char|
-            if char == '<'
-                angle_openings += 1
-            elsif char == '>'
-                angle_closings += 1
-            elsif char == '['
-                square_openings += 1
-            elsif char == ']'
-                square_closings += 1
+    def same_openings_and_closings(opening, closing)
+        num_of_openings = 0
+        num_of_closings = 0
+        parseable_code = @code.split('')
+
+        parseable_code.each do |char|
+            if char == opening
+                num_of_openings += 1
+            elsif char == closing
+                num_of_closings += 1
             end
         end
 
-        return angle_openings == angle_closings && square_openings == square_closings
+        return num_of_openings == num_of_closings
     end
 
     def no_syntax_errors
