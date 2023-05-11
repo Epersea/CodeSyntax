@@ -11,7 +11,7 @@ RSpec.describe CodeLinter do
   end
 
   it 'does not validate code that starts with >' do
-    test_code = CodeLinter.new('><>')
+    test_code = CodeLinter.new('><<>')
 
     is_valid = test_code.validate
 
