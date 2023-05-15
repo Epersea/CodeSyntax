@@ -10,7 +10,7 @@ RSpec.describe CodeLinter do
     expect(is_valid).to eq(true)
   end
 
-  xit 'does not validate code that starts with >' do
+  it 'does not validate code that starts with >' do
     test_code = CodeLinter.new('><<>')
 
     is_valid = test_code.validate
@@ -18,7 +18,7 @@ RSpec.describe CodeLinter do
     expect(is_valid).to eq(false)
   end
 
-  xit 'does not validate code that ends with <' do
+  it 'does not validate code that ends with <' do
     test_code = CodeLinter.new('<>><')
 
     is_valid = test_code.validate
@@ -26,7 +26,7 @@ RSpec.describe CodeLinter do
     expect(is_valid).to eq(false)
   end
 
-  xit 'does not validate code if number of "<" and ">" is not the same' do
+  it 'does not validate code if number of "<" and ">" is not the same' do
     test_code = CodeLinter.new('<>><>')
 
     is_valid = test_code.validate
@@ -34,7 +34,7 @@ RSpec.describe CodeLinter do
     expect(is_valid).to eq(false)
   end
 
-  xit 'validates a correct expression with angle and square brackets' do
+  it 'validates a correct expression with angle and square brackets' do
     test_code = CodeLinter.new('[<><>[]]')
 
     is_valid = test_code.validate
@@ -42,7 +42,7 @@ RSpec.describe CodeLinter do
     expect(is_valid).to eq(true)
   end
 
-  xit 'does not validate code where sets of brackets interrupt each other' do
+  it 'does not validate code where sets of brackets interrupt each other' do
     test_code = CodeLinter.new('[<][>]<>')
 
     is_valid = test_code.validate
