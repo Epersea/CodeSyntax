@@ -5,38 +5,34 @@ class CodeLinter
     end
 
     def validate
-        if valid_opening? == false
-            return false
-        else
-            parseable_code = @code.split('')
-            return matched_pairs?(parseable_code, '<', '>')
-        end
+        parseable_code = @code.split('')
+        return matched_pairs?(parseable_code)
     end
 
     private
 
-    def valid_opening?
-        @code[0] == '<' || @code[0] == '['
-    end
-
-    def matched_pairs?(code, opening, closing)
-        if code[0] == closing
+    def matched_pairs?(code)
+        if is_closing?(code[0])
             return false
         else
+            closing = matching_closing(code[0])
             code.shift
+
             if !code.include?(closing)
                 return false
             end
+
             code.each do |char|
                 if char == closing
                     closing_index = code.find_index(closing)
                     code.delete_at(closing_index)
+
                     if code.length == 0
                         return true
                     elsif code.length == 1
                         return false
                     elsif code.length >= 2
-                        return matched_pairs?(code, opening, closing)
+                        return matched_pairs?(code)
                     end
                 end
             end
@@ -44,6 +40,15 @@ class CodeLinter
     end
 end
 
-test_code = CodeLinter.new('<><><<>>')
 
-is_valid = test_code.validate
+def is_closing?(char)
+    return char == '>' || char == ']'
+end
+
+def matching_closing(opening)
+    if opening == '<'
+        return '>'
+    elsif opening == '['
+        return ']'
+    end
+end
