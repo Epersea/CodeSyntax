@@ -16,7 +16,7 @@ class CodeLinter
     private
 
     def symbols_cut_each_other?
-        return @code.match?(/<\]/) || @code.match(/\[>/)
+        return @code.include?('<]') || @code.include?('[>')
     end
 
     def matched_pairs?(code)
@@ -47,7 +47,7 @@ class CodeLinter
 end
 
 def is_closing?(char)
-    return char == '>' || char == ']'
+    return '>]'.include?(char)
 end
 
 def matching_closing(opening)
