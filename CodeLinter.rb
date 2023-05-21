@@ -51,11 +51,9 @@ def is_closing?(char)
 end
 
 def matching_closing(opening)
-    if opening == '<'
-        return '>'
-    elsif opening == '['
-        return ']'
-    end
+   opening_ascii_value = opening.ord
+   opening_closing_value = opening_ascii_value + 2
+   return opening_closing_value.chr
 end
 
 def delete_valid_pair(code, closing)
