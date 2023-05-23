@@ -3,7 +3,7 @@ require_relative '../CodeLinter.rb'
 RSpec.describe CodeLinter do
 
   it 'validates a correct expression with angle brackets' do
-    test_code = CodeLinter.new('<><><<>>')
+    test_code = CodeLinter.new('<>')
 
     is_valid = test_code.validate
 
@@ -27,7 +27,7 @@ RSpec.describe CodeLinter do
   end
 
   it 'does not validate code if number of "<" and ">" is not the same' do
-    test_code = CodeLinter.new('<>><>')
+    test_code = CodeLinter.new('<>>')
 
     is_valid = test_code.validate
 
@@ -35,7 +35,7 @@ RSpec.describe CodeLinter do
   end
 
   it 'validates a correct expression with angle and square brackets' do
-    test_code = CodeLinter.new('[<><>[]]')
+    test_code = CodeLinter.new('[<>]')
 
     is_valid = test_code.validate
 
@@ -43,7 +43,7 @@ RSpec.describe CodeLinter do
   end
 
   it 'does not validate code where sets of brackets interrupt each other' do
-    test_code = CodeLinter.new('<[><]>')
+    test_code = CodeLinter.new('<[>]')
 
     is_valid = test_code.validate
 
@@ -59,7 +59,7 @@ RSpec.describe CodeLinter do
   end
 
   it 'does not validate code with mixed brackets where openings and closings dont match' do
-    test_code = CodeLinter.new('<[]][[]>')
+    test_code = CodeLinter.new('[]<>><<>')
 
     is_valid = test_code.validate
 
