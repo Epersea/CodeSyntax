@@ -20,22 +20,26 @@ class CodeLinter
         end
 
         parseable_code = @code.split('')
-        return matched_pairs?(parseable_code)
+
+        matched_pairs?(parseable_code)
     end
 
     private
 
     def symbols_cut_each_other?
-        return @code.include?("#{OPENING_SHOVEL}#{CLOSING_BRACKET}") || @code.include?("#{OPENING_BRACKET}#{CLOSING_SHOVEL}")
+        bracket_cuts_shovels = "#{OPENING_SHOVEL}#{CLOSING_BRACKET}"
+        shovel_cuts_brackets = "#{OPENING_BRACKET}#{CLOSING_SHOVEL}"
+
+        @code.include?(bracket_cuts_shovels) || @code.include?(shovel_cuts_brackets)
     end
 
     def matched_pairs?(code)
-        if is_closing?(code[0])
+        if is_closing?(code.first)
             return false
         else
-            closing = matching_closing(code[0])
+            closing = matching_closing(code.first)
 
-            if !code.include?(closing)
+            if has_no_closings(code, closing)
                 return false
             end
 
@@ -43,11 +47,11 @@ class CodeLinter
                 if char == closing
                     code = delete_valid_pair(code, closing)
 
-                    if code.length == 0
+                    if no_chars_left(code)
                         return true
-                    elsif code.length == 1
+                    elsif one_char_left(code)
                         return false
-                    elsif code.length >= 2
+                    elsif two_or_more_chars_left(code)
                         return matched_pairs?(code)
                     end
                 end
@@ -56,11 +60,15 @@ class CodeLinter
     end
 
     def is_closing?(char)
-        return char == CLOSING_SHOVEL || char == CLOSING_BRACKET
+        char == CLOSING_SHOVEL || char == CLOSING_BRACKET
     end
 
     def matching_closing(opening)
         PAIRS[opening]
+    end
+
+    def has_no_closings(code, closing)
+        !code.include?(closing)
     end
 
     def delete_valid_pair(code, closing)
@@ -68,7 +76,19 @@ class CodeLinter
         code.delete_at(closing_index)
         code.shift
 
-        return code
+        code
+    end
+
+    def no_chars_left(code)
+        code.length == 0
+    end
+
+    def one_char_left(code)
+        code.length == 1
+    end
+
+    def two_or_more_chars_left(code)
+        code.length >= 2
     end
 end
 
