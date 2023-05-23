@@ -1,5 +1,15 @@
 class CodeLinter
 
+    OPENING_SHOVEL = '<'
+    CLOSING_SHOVEL = '>'
+    OPENING_BRACKET = '['
+    CLOSING_BRACKET = ']'
+
+    PAIRS = {
+        OPENING_SHOVEL => CLOSING_SHOVEL,
+        OPENING_BRACKET => CLOSING_BRACKET
+    }
+
     def initialize(code)
         @code = code
     end
@@ -16,7 +26,7 @@ class CodeLinter
     private
 
     def symbols_cut_each_other?
-        return @code.include?('<]') || @code.include?('[>')
+        return @code.include?("#{OPENING_SHOVEL}#{CLOSING_BRACKET}") || @code.include?("#{OPENING_BRACKET}#{CLOSING_SHOVEL}")
     end
 
     def matched_pairs?(code)
@@ -44,24 +54,22 @@ class CodeLinter
             end
         end
     end
-end
 
-def is_closing?(char)
-    return '>]'.include?(char)
-end
+    def is_closing?(char)
+        return char == CLOSING_SHOVEL || char == CLOSING_BRACKET
+    end
 
-def matching_closing(opening)
-    if opening == '<'
-        return '>'
-    elsif opening == '['
-        return ']'
+    def matching_closing(opening)
+        PAIRS[opening]
+    end
+
+    def delete_valid_pair(code, closing)
+        closing_index = code.find_index(closing)
+        code.delete_at(closing_index)
+        code.shift
+
+        return code
     end
 end
 
-def delete_valid_pair(code, closing)
-    closing_index = code.find_index(closing)
-    code.delete_at(closing_index)
-    code.shift
 
-    return code
-end
