@@ -27,9 +27,6 @@ class Character
             PAIRS[opening]
         end
 
-        def has_no_closings(code, closing)
-            !code.include?(closing)
-        end
     end
 
 end
