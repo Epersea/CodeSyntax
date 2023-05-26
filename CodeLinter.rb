@@ -52,8 +52,8 @@ end
 
 def matching_closing(opening)
    opening_ascii_value = opening.ord
-   opening_closing_value = opening_ascii_value + 2
-   return opening_closing_value.chr
+   closing_ascii_value = opening_ascii_value + 2
+   return closing_ascii_value.chr
 end
 
 def delete_valid_pair(code, closing)
