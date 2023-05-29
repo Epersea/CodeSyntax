@@ -1,6 +1,6 @@
 require_relative 'Character.rb'
 require_relative 'CodeManipulator.rb'
-require_relative 'Code.rb'
+require_relative 'CodeChecker.rb'
 
 class Linter
 
@@ -26,20 +26,20 @@ class Linter
         else
             closing = Character.matching_closing(program.first)
 
-            if Code.has_no_char?(program, closing)
+            if CodeChecker.has_no_char?(program, closing)
                 return false
             end
 
             program.each do |char|
                 if char == closing
-                    program = CodeManipulator.delete_valid_pair(program, closing)
+                    mutated_program = CodeManipulator.delete_valid_pair(program, closing)
 
-                    if Code.no_chars_left?(program)
+                    if CodeChecker.no_chars_left?(mutated_program)
                         return true
-                    elsif Code.one_char_left?(program)
+                    elsif CodeChecker.one_char_left?(mutated_program)
                         return false
-                    elsif Code.two_or_more_chars_left?(program)
-                        return matched_pairs?(program)
+                    elsif CodeChecker.two_or_more_chars_left?(mutated_program)
+                        return matched_pairs?(mutated_program)
                     end
                 end
             end

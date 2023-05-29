@@ -1,4 +1,4 @@
-class Code
+class CodeChecker
 
     class << self
 
