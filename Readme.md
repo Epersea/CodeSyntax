@@ -41,4 +41,13 @@ I liked the idea of iterating over a string of code that gets shorter and shorte
 That left the problem of what to do when characters of different types intercept each other. I tried to make the detection of wrong character combinations part of the recursive function, but that overcomplicated the code. In the end, I detected that I only needed to look for two cases ('<]' and '[>'), so I took care of detecting wrong cases before entering the recursive function.
 
 # Third iteration
-During our second kata sharing session, we were told to left our solution as-is and take care of refactoring, so that was my main focus of the week (currently in progress).
+During our second kata sharing session, we were told to left our solution as-is and take care of refactoring, so that was my main focus of the week.
+The refactor was approached in two steps: first, I focused in giving explaining names to all methods, and then I used those names as a base to divide the code in classes depending on responsibilities. In the end, I created three utility classes:
+- Character handles character identification and contains a series of constants that name and match the characters and methods for finding incompatible characters, identifying if a character is a closing and finding the correct closing for a given opening.
+- CodeManipulator contains methods that alter the input given, by converting a string into an array and deleting matched pairs.
+- CodeChecker answers questions about the code itself, i. e. if it contains a given character or how long is it.
+I also tried a little experiment with ascii in a separate branch, `playing_with_ascii`. I realized that in some sets of brackets, including [], {} and <>, the ascii values of openings and closings are separated by 2, so I reimplemented the `matching_closing` function to find closings by ascii value.
+
+Next steps/improvements pending:
+- At the moment, all class methods are static and need to be passed the code or character to analyze instead of having a constructor, which is a bit clunky.
+- The variable names are a bit confusing (`code`, `program`, `manipulated_program`...) and would benefit from some refactoring to explain clearly what they are.
